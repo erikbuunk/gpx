@@ -14,7 +14,7 @@ files.forEach(file => {
   content.setAttribute('class','card-content');
   var span=document.createElement('span');
   span.setAttribute('class','card-title activator grey-text text-darken-4 flow-text');
-  span.textContent=toTitleCase(file.replace(/-/g, " ")).replace('Ns',"NS");
+  span.textContent=toTitleCase(file.replace(/-/g, " ").replace(/_/g, " ")).replace('Ns',"NS");
 
   var icon=document.createElement('i');
   icon.setAttribute('class','material-icons right');
