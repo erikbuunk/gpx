@@ -1,0 +1,32 @@
+body {
+  margin: 0px;
+  padding: 0px;
+}
+
+#mapid {
+  height: 100vh;
+  width: 100vw;
+}
+
+#message {
+  z-index : 999;
+  position: absolute;
+  top: 0em;
+  right: 0em;
+  /* width: 20%; */
+  /* height: 100%; */
+  background-color: none; /* rgba(255, 255, 255, 0.5); */
+  border: 1px;
+  padding: 1em;
+  /* font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', Arial, sans-serif; */
+  display: flex;
+  flex-direction: column;
+}
+
+
+button {
+  height: 3em;
+
+  /* margin: 1em; */
+  align-self: rigtht;
+}
