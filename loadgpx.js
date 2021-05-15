@@ -7,7 +7,7 @@ function GPXParser(xmlDoc, map) {
   this.map = map;
   this.trackcolour = "#ff00ff"; // red
   this.trackwidth = 5;
-  this.mintrackpointdelta = 0.0001;
+  this.mintrackpointdelta = 0.0000001;
 
   this.myIcon = L.icon({
     iconUrl: 'img/marker.png',
@@ -22,22 +22,22 @@ function GPXParser(xmlDoc, map) {
 }
 
 // Set the colour of the track line segements.
-GPXParser.prototype.setTrackColour = function(colour) {
+GPXParser.prototype.setTrackColour = function (colour) {
   this.trackcolour = colour;
 }
 
 // Set the width of the track line segements
-GPXParser.prototype.setTrackWidth = function(width) {
+GPXParser.prototype.setTrackWidth = function (width) {
   this.trackwidth = width;
 }
 
 // Set the minimum distance between trackpoints.
 // Used to cull unneeded trackpoints from map.
-GPXParser.prototype.setMinTrackPointDelta = function(delta) {
+GPXParser.prototype.setMinTrackPointDelta = function (delta) {
   this.mintrackpointdelta = delta;
 }
 
-GPXParser.prototype.translateName = function(name) {
+GPXParser.prototype.translateName = function (name) {
   if (name == "wpt") {
     return "Waypoint";
   } else if (name == "trkpt") {
@@ -48,7 +48,7 @@ GPXParser.prototype.translateName = function(name) {
 }
 
 
-GPXParser.prototype.createMarker = function(point) {
+GPXParser.prototype.createMarker = function (point) {
   var lon = parseFloat(point.getAttribute("lon"));
   var lat = parseFloat(point.getAttribute("lat"));
   var html = "";
@@ -82,15 +82,18 @@ GPXParser.prototype.createMarker = function(point) {
     }
   }
 
-  var marker = L.marker([lat, lon], {icon: this.myIcon}).addTo(map);
+  var marker = L.marker([lat, lon], {
+    icon: this.myIcon
+  }).addTo(map);
   marker.bindPopup(html);
 
 }
 
-GPXParser.prototype.addTrackSegmentToMap = function(trackSegment, colour,
+GPXParser.prototype.addTrackSegmentToMap = function (trackSegment, colour,
   width) {
   var trackpoints = trackSegment.getElementsByTagName("trkpt");
-  if (trackpoints.length == 0) {
+
+    if (trackpoints.length == 0) {
     return;
   }
 
@@ -101,25 +104,14 @@ GPXParser.prototype.addTrackSegmentToMap = function(trackSegment, colour,
   var lastlat = parseFloat(trackpoints[0].getAttribute("lat"));
 
   var latlng = [lastlat, lastlon];
-  // var latlng = new google.maps.LatLng(lastlat,lastlon);
+
   pointarray.push(latlng);
 
   for (var i = 1; i < trackpoints.length; i++) {
     var lon = parseFloat(trackpoints[i].getAttribute("lon"));
     var lat = parseFloat(trackpoints[i].getAttribute("lat"));
-
-    // Verify that this is far enough away from the last point to be used.
-    var latdiff = lat - lastlat;
-    var londiff = lon - lastlon;
-    if (Math.sqrt(latdiff * latdiff + londiff * londiff) >
-      this.mintrackpointdelta) {
-      lastlon = lon;
-      lastlat = lat;
-      latlng = [lat, lon];
-      // latlng = new google.maps.LatLng(lat,lon);
-      pointarray.push(latlng);
-    }
-
+    latlng = [lat, lon];
+    pointarray.push(latlng);
   }
 
   //add point to polyline and add to maps
@@ -132,16 +124,18 @@ GPXParser.prototype.addTrackSegmentToMap = function(trackSegment, colour,
 
 }
 
-GPXParser.prototype.addTrackToMap = function(track, colour, width) {
+GPXParser.prototype.addTrackToMap = function (track, colour, width) {
   var segments = track.getElementsByTagName("trkseg");
+
   for (var i = 0; i < segments.length; i++) {
     var segmentlatlngbounds = this.addTrackSegmentToMap(segments[i], colour,
       width);
+    }
   }
-}
 
-GPXParser.prototype.addRouteToMap = function(route, colour, width) {
-  var routepoints = route.getElementsByTagName("rtept");
+  GPXParser.prototype.addRouteToMap = function (route, colour, width) {
+    var routepoints = route.getElementsByTagName("rtept");
+
   if (routepoints.length == 0) {
     return;
   }
@@ -157,19 +151,11 @@ GPXParser.prototype.addRouteToMap = function(route, colour, width) {
   for (var i = 1; i < routepoints.length; i++) {
     var lon = parseFloat(routepoints[i].getAttribute("lon"));
     var lat = parseFloat(routepoints[i].getAttribute("lat"));
-
-    // Verify that this is far enough away from the last point to be used.
-    var latdiff = lat - lastlat;
-    var londiff = lon - lastlon;
-    if (Math.sqrt(latdiff * latdiff + londiff * londiff) >
-      this.mintrackpointdelta) {
-      lastlon = lon;
-      lastlat = lat;
-      latlng = [lat, lon];
-      pointarray.push(latlng);
-    }
-
+    latlng = [lat, lon];
+    pointarray.push(latlng);
   }
+
+
   var polyline = L.polyline(pointarray, {
     color: colour,
     weight: width
@@ -177,7 +163,7 @@ GPXParser.prototype.addRouteToMap = function(route, colour, width) {
 
 }
 
-GPXParser.prototype.centerAndZoom = function(trackSegment) {
+GPXParser.prototype.centerAndZoom = function (trackSegment) {
 
   var pointlist = new Array("trkpt", "rtept", "wpt");
   var minlat = 0;
@@ -232,7 +218,7 @@ GPXParser.prototype.centerAndZoom = function(trackSegment) {
   // this.map.fitBounds(bounds);
 }
 
-GPXParser.prototype.centerAndZoomToLatLngBounds = function(latlngboundsarray) {
+GPXParser.prototype.centerAndZoomToLatLngBounds = function (latlngboundsarray) {
 
   // TODO: get bounds
   // var boundingbox = new google.maps.LatLngBounds();
@@ -252,22 +238,25 @@ GPXParser.prototype.centerAndZoomToLatLngBounds = function(latlngboundsarray) {
   //         this.map.getBoundsZoomLevel(boundingbox));
 }
 
-GPXParser.prototype.addTrackpointsToMap = function() {
+GPXParser.prototype.addTrackpointsToMap = function () {
   var tracks = this.xmlDoc.documentElement.getElementsByTagName("trk");
+
   for (var i = 0; i < tracks.length; i++) {
     this.addTrackToMap(tracks[i], this.trackcolour, this.trackwidth);
   }
 }
 
-GPXParser.prototype.addWaypointsToMap = function() {
+GPXParser.prototype.addWaypointsToMap = function () {
   var waypoints = this.xmlDoc.documentElement.getElementsByTagName("wpt");
+
   for (var i = 0; i < waypoints.length; i++) {
     this.createMarker(waypoints[i]);
   }
 }
 
-GPXParser.prototype.addRoutepointsToMap = function() {
+GPXParser.prototype.addRoutepointsToMap = function () {
   var routes = this.xmlDoc.documentElement.getElementsByTagName("rte");
+
   for (var i = 0; i < routes.length; i++) {
     this.addRouteToMap(routes[i], this.trackcolour, this.trackwidth);
   }
