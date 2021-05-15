@@ -1,18 +1,6 @@
-// var fs = require('fs');
-// var files = fs.readdirSync('/assets/');
-
-// const gpxFiles = [
-//   'beukenburg-ns-route.gpx',
-//   'NS-Muiderslot.gpx',
-//   'NS-StaelduinseBos.gpx',
-//   'NS-TienhovensePlassen.gpx',
-//   'den-haag-ns-route.gpx',
-//   'utrechtse-heuvelrug-ns-route.gpx',
-//   'NS-UtrBosRivierRoute.gpx'
-// ];
 
 
-var map = L.map('mapid').setView([51.505, -0.09], 13);
+var map = L.map('mapid').setView([48.13,11.57], 13);
 let locationMarkerAccuracy = L.circle([0, 0], {
   color: "#0077ff",
   fillColor: '',
@@ -106,7 +94,7 @@ if (myParam !== null) {
   getRoute(myParam);
 } else {
 
-  console.log(files);
+  // console.log(files);
   files.forEach((file) => {
     getRoute(file+'.gpx');
   })
