@@ -62,4 +62,5 @@ var files = [
 	"111_NS-TienhovensePlassen",
 	"112_NS-UtrBosRivierRoute",
 	"113_utrechtse-heuvelrug-ns-route",
+	"200_munchen",
 ]
