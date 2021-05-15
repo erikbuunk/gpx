@@ -6,6 +6,7 @@ path = "assets"
 files = os.listdir(path)
 
 f_out = open("files.js", "w")
+f_out.write("// This file is autogenerate by dir.py\n")
 f_out.write("var files = [\n")
 
 for f in sorted(files):
