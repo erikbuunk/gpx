@@ -25,4 +25,4 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Retrieve directory contents
-      - run: make run deploy
+        run: make run deploy
