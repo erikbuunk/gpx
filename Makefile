@@ -1,6 +1,8 @@
 run: z_run ## Run stat gathering script
 deploy: z_deploy ## Run
 
+RUN_DATE=$(shell date)
+
 z_run: ## ∟ Run backend
 	python dir.py
 
