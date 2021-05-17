@@ -22,11 +22,11 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      - name: Add ssh deploy key
+      - name: Set Git config vars
         run: |
           git config --global user.email "erik.buunk@gmail.com"
           git config --global user.name "GPX agent"
 
       # Runs a single command using the runners shell
-      - name: Retrieve directory contents
+      - name: Retrieve directory contents, update files.js
         run: make run deploy
