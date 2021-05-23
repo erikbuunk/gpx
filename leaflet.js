@@ -1,6 +1,4 @@
-
-
-var map = L.map('mapid').setView([48.13,11.57], 13);
+var map = L.map('mapid').setView([48.13, 11.57], 13);
 let locationMarkerAccuracy = L.circle([0, 0], {
   color: "#0077ff",
   fillColor: '',
@@ -46,7 +44,7 @@ function startTimer() {
     clearTimeout(timer);
     timerOn = false;
     myButton.innerHTML = "Start GPS";
-    myButton.style = "background-color: #fff;"
+    myButton.style = "background-color: #007bff;"
   } else {
     getLocation();
     timer = setInterval(getLocation, 5000);
@@ -58,10 +56,31 @@ function startTimer() {
 }
 
 function centerView() {
-  map.locate({
-    setView: true
+  navigator.geolocation.getCurrentPosition(locationSuccess, onLocationError, {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0
   });
 }
+
+
+
+function locationSuccess(pos) {
+
+  map.locate({
+    setView: false,
+    maxZoom: 16
+  });
+
+  p = {
+    lon: pos.coords.longitude,
+    lat: pos.coords.latitude
+  }
+
+  map.panTo(p)
+
+}
+
 
 function showPosition(position) {
   map.locate({
@@ -78,9 +97,12 @@ function onLocationFound(e) {
   locationMarkerAccuracy.setLatLng(e.latlng);
   locationMarker.setLatLng(e.latlng);
 
+  map.panTo(e.latlng)
+
 }
 
 function onLocationError(e) {
+  console.warn(`ERROR(${err.code}): ${err.message}`);
   alert(e.message);
 }
 
@@ -93,10 +115,8 @@ const myParam = urlParams.get('route');
 if (myParam !== null) {
   getRoute(myParam);
 } else {
-
-  // console.log(files);
   files.forEach((file) => {
-    getRoute(file+'.gpx');
+    getRoute(file + '.gpx');
   })
 }
 
@@ -104,7 +124,7 @@ function getRoute(file) {
   $.ajax({
       url: 'assets/' + file,
       dataType: "xml",
-      success: function(data) {
+      success: function (data) {
         var parser = new GPXParser(data, map);
         parser.setTrackColour("#ff0000"); // Set the track line colour
         parser.setTrackWidth(5); // Set the track line width
