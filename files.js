@@ -65,5 +65,6 @@ var files = [
 	"113_utrechtse-heuvelrug-ns-route",
 	"200_munchen",
 	"201_isarradweg-moosburg",
-	"300_freisinger-domberg.gpx",
+	"300_freisinger-domberg",
+	"400_schliersberg-und-schliersbergalm",
 ]
